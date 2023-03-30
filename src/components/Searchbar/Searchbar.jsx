@@ -4,16 +4,15 @@ import { SearchbarContainer, SearchForm, SearchFormButton, SearchFormButtonLabel
 
 const Searchbar = () => (
     <SearchbarContainer>
-        <SearchForm class="form">
-            <SearchFormButton type="submit" class="button">
-                <SearchFormButtonLabel class="button-label">Search</SearchFormButtonLabel>
+        <SearchForm>
+            <SearchFormButton type="submit">
+                <SearchFormButtonLabel>Search</SearchFormButtonLabel>
             </SearchFormButton>
 
             <SearchFormInput
-                class="input"
                 type="text"
                 autocomplete="off"
-                autofocus
+                autoFocus
                 placeholder="Search images and photos"
             />
         </SearchForm>

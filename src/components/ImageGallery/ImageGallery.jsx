@@ -5,11 +5,11 @@ import { GalleryWrapper } from "./ImageGallery.styled";
 
 
 const ImageGallery = ({articles}) => (
-    <GalleryWrapper class="gallery">
+    <GalleryWrapper>
         {
             articles.map(({ id, webformatURL, largeImageURL }) =>
                 <ImageGalleryItem
-                    id={id}
+                    key={id}
                     smallUrl={webformatURL}
                     largeUrl={largeImageURL}
                 />
