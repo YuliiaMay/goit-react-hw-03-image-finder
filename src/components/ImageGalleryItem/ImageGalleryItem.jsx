@@ -1,7 +1,7 @@
 import React from "react";
 import { ImageItem, Image } from "./ImageGalleryItem.styled";
 
-const ImageGalleryItem = ({id, smallUrl, largeUrl}) => (
+const ImageGalleryItem = ({smallUrl, largeUrl}) => (
     <ImageItem >
         <Image src={smallUrl} alt="" />
     </ImageItem>
