@@ -1,10 +1,11 @@
 import React from "react";
 import ImageGalleryItem from "components/ImageGalleryItem/ImageGalleryItem";
+import { GalleryWrapper } from "./ImageGallery.styled";
 
 
 
 const ImageGallery = ({articles}) => (
-    <ul class="gallery">
+    <GalleryWrapper class="gallery">
         {
             articles.map(({ id, webformatURL, largeImageURL }) =>
                 <ImageGalleryItem
@@ -14,7 +15,7 @@ const ImageGallery = ({articles}) => (
                 />
             )
         }
-    </ul>
+    </GalleryWrapper>
 )
 
 export default ImageGallery;
