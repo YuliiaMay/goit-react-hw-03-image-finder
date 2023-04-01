@@ -1,12 +1,25 @@
 import React, {Component} from "react";
 import { SearchbarContainer, SearchForm, SearchFormButton, SearchFormButtonLabel, SearchFormInput } from "./Searchbar.styled";
 import { toast } from 'react-toastify';
+import { FcSearch } from "react-icons/fc";
 
 
 class Searchbar extends Component {
     state = {
         query: '',
+        page: 1,
     }
+
+    resetPage() {
+        this.setState({page: 1})
+    }
+
+    incrementPage() {
+        this.setState(prevState => {
+            return { page: prevState.page + 1 };
+        })
+    }
+
 
     handelChange = ({target: {value}}) => {
         this.setState({query: value.toLowerCase()})
@@ -35,7 +48,8 @@ class Searchbar extends Component {
             <SearchbarContainer>
                 <SearchForm onSubmit={this.handelSubmit}>
                     <SearchFormButton type="submit">
-                        <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+                        <FcSearch size={32}/>
+                        {/* <SearchFormButtonLabel>Search</SearchFormButtonLabel> */}
                     </SearchFormButton>
 
                     <SearchFormInput

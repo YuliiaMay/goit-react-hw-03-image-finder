@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const GalleryWrapper = styled.ul`
+    // paddingLeft: '30px',
+    // paddingRight: '30px',
     display: grid;
     max-width: calc(100vw - 48px);
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
