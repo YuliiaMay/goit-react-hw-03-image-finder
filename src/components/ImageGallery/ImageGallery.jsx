@@ -3,7 +3,7 @@ import ImageGalleryItem from "components/ImageGalleryItem/ImageGalleryItem";
 import { GalleryWrapper } from "./ImageGallery.styled";
 import LoadMoreButton from "components/Button/Button";
 import Loader from "components/Loader/Loader";
-
+import DeafaultScreen from "components/DeafaultScreen/DeafaultScreen";
 
 
 export default class ImageGallery extends Component {
@@ -54,12 +54,12 @@ export default class ImageGallery extends Component {
 
 
     render() {
-        const { gallery, isLoading, error, status } = this.state;
+        const { gallery, error, status } = this.state;
 
         
 
         if (status === 'idle') {
-            return <h1>enter your query</h1>
+            return <DeafaultScreen />
         }
 
         if (status === 'pending') {
