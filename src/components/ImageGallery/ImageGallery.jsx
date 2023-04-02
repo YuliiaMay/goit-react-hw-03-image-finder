@@ -24,12 +24,13 @@ export default class ImageGallery extends Component {
         if (currentQuery !== prevQuery) {
             this.setState({ status: 'pending' })
             
-            this.getImages(currentQuery, prevState);
-    
+            this.getImages();
         }
+        
+
     }
 
-    getImages = (prevState) => {
+    getImages = () => {
         const { page } = this.state;
         const { query } = this.props;
 
@@ -64,10 +65,12 @@ export default class ImageGallery extends Component {
             })
             .then(({hits}) => {
                 const gallery = hits;
-                return this.setState({
-                    gallery,
-                    ...prevState.gallery,
-                    status: 'resolved',
+                const newGallery = this.setState(prevState => {
+                    return {
+                        gallery,
+                        ...prevState.gallery,
+                        status: 'resolved',
+                    }
                 })
             })
             .catch(error => this.setState({
@@ -76,29 +79,27 @@ export default class ImageGallery extends Component {
             })) 
     }
 
-    // handelClick = (e) => {
-    //     console.log(e.target);
-    // }
+    handleLoadMore = () => {
+        this.setState(({ page }) => {
+            return {page: page + 1}
+        });
 
-    // openModal = (e) => {
-    //     console.log(e.target);
-    // }
+        this.getImages(this.state.page);
+    }
 
 
     render() {
-        const { gallery, error, status } = this.state;
+        const { gallery, error, status, page } = this.state;
 
         if (status === 'idle') {
             return (<DeafaultScreen />);
         }
 
         if (status === 'pending') {
-            console.log('pending');
             return (<Loader />);
         }
 
         if (status === 'rejected') {
-            console.log(`'rejected' : ${this.props.query}`);
             return (<ErrorScreen query={this.props.query} />);
         }
 
@@ -118,7 +119,7 @@ export default class ImageGallery extends Component {
                         }
                     </GalleryWrapper>
 
-                    <LoadMoreButton />
+                    <LoadMoreButton onLoadMore={this.handleLoadMore} />
                 </>            
             )
         }

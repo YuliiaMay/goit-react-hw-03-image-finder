@@ -2,9 +2,9 @@ import React from "react";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { LoadMoreBtn } from "./Button.styled";
 
-const LoadMoreButton = () => {
+const LoadMoreButton = ({onLoadMore}) => {
     return (
-        <LoadMoreBtn>
+        <LoadMoreBtn onClick={onLoadMore}>
             <span>
                 Load More
                 {/* <FiArrowDownCircle /> */}

@@ -65,6 +65,7 @@ export async function fetchImages(query, page) {
             },
         });
 
+
         if (response.status === 200) {
             return response;
         }
