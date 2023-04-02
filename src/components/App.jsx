@@ -1,20 +1,13 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import ImageGallery from "./ImageGallery/ImageGallery";
-import Loader from "./Loader/Loader";
-// import Modal from "./Modal/Modal";
 import Searchbar from "./Searchbar/Searchbar";
-import LoadMoreButton from "./Button/Button";
-
-
 
 
 export class App extends Component {
   state = {
     query: '',
-    gallery: {},
   }
 
 
@@ -24,7 +17,8 @@ export class App extends Component {
 
 
   render() {
-    const { gallery, isLoading, error } = this.state;
+    const { query } = this.state;
+
       return (
         <div
           style={{
@@ -36,18 +30,9 @@ export class App extends Component {
         >
           
           <Searchbar onSubmit={this.handelSubmit} />
-
-
+          <ImageGallery query={query} />
           
-          
-          <ImageGallery gallery={gallery}  query={this.state.query} />
-
           <ToastContainer />
-
-          
-
-          {/* <Modal /> */}
-
         </div>
       );
   }

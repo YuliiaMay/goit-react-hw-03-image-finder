@@ -4,70 +4,102 @@ import { GalleryWrapper } from "./ImageGallery.styled";
 import LoadMoreButton from "components/Button/Button";
 import Loader from "components/Loader/Loader";
 import DeafaultScreen from "components/DeafaultScreen/DeafaultScreen";
+import ErrorScreen from "components/ErrorScreen/ErrorScreen";
+import { toast } from 'react-toastify';
+
+import { fetchImages } from "services/api";
 
 
 export default class ImageGallery extends Component {
     state = {
         gallery: [],
         error: null,
-        status: 'idle'
+        status: 'idle',
+        page: 1
     }
 
     componentDidUpdate = (prevProps, prevState) => {
         const prevQuery = prevProps.query;
         const currentQuery = this.props.query;
         if (currentQuery !== prevQuery) {
-            this.setState({status: 'pending'})
-
-            fetch(`https://pixabay.com/api/?key=33500508-b4271a177ba3ac813eaf35292&q=${currentQuery}&image_type=photo&orientation=horizontal&page=1&per_page=12`)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-
-                    return Promise.reject(new Error(`we have not found images for search query ${currentQuery}`))
-                })
-                .then( data  => {
-                    const gallery = data.hits;
-                    console.log(gallery);
-                    return this.setState({
-                        gallery,
-                        ...prevState.gallery,
-                        status: 'resolved',
-                    })
-                })
-                .catch(error => this.setState({
-                    error,
-                    status: 'rejected',
-                }))       
+            this.setState({ status: 'pending' })
+            
+            this.getImages(currentQuery, prevState);
+    
         }
     }
 
-    handelClick = (e) => {
-        console.log(e.target);
+    getImages = (prevState) => {
+        const { page } = this.state;
+        const { query } = this.props;
+
+        fetchImages(query, page)
+            
+            .then(({ data }) => {
+                if(data.totalHits > 0) {
+                    toast.success(`Total images in this gallery: ${data.totalHits}`, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+                    return data;
+                }
+
+                toast.error(`No images by query "${query}"`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+            .then(({hits}) => {
+                const gallery = hits;
+                return this.setState({
+                    gallery,
+                    ...prevState.gallery,
+                    status: 'resolved',
+                })
+            })
+            .catch(error => this.setState({
+                error,
+                status: 'rejected',
+            })) 
     }
 
-    openModal = (e) => {
-        console.log(e.target);
-    }
-    
+    // handelClick = (e) => {
+    //     console.log(e.target);
+    // }
+
+    // openModal = (e) => {
+    //     console.log(e.target);
+    // }
 
 
     render() {
         const { gallery, error, status } = this.state;
 
-        
-
         if (status === 'idle') {
-            return <DeafaultScreen />
+            return (<DeafaultScreen />);
         }
 
         if (status === 'pending') {
-            return <Loader />
+            console.log('pending');
+            return (<Loader />);
         }
 
         if (status === 'rejected') {
-            return <h1>{error.message}</h1>
+            console.log(`'rejected' : ${this.props.query}`);
+            return (<ErrorScreen query={this.props.query} />);
         }
 
         if (status === 'resolved') {

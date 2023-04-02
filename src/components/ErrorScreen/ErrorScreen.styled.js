@@ -15,6 +15,6 @@ export const Message = styled.h1`
     margin-bottom: 0px
 `;
 
-export const DeafaultImg = styled.img`
+export const ErrorImg = styled.img`
     width: 800px;
 `;
