@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Overlay, ModalContainer, ModalImg } from "./Modal.styled";
+import { Overlay, ModalContainer, ModalImg, CloseModalBtn } from "./Modal.styled";
+import { ImCross } from "react-icons/im";
 
 class Modal extends Component {
     componentDidMount() {
@@ -17,13 +18,14 @@ class Modal extends Component {
     };
 
     render() {
-        const { bigImgUrl } = this.props;
+        const { bigImgUrl, query } = this.props;
 
         return (
             <Overlay>
                 <ModalContainer>
-                    <ModalImg src={bigImgUrl} alt="" />
+                    <ModalImg src={bigImgUrl} alt={query} />
                 </ModalContainer>
+                <CloseModalBtn><ImCross size={28}/></CloseModalBtn>
             </Overlay>
         )
     }

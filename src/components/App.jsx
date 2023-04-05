@@ -15,9 +15,7 @@ export class App extends Component {
     this.setState({query})
   }
 
-  openModal = ({target}) => {
-    console.log(target);
-  }
+
 
 
   render() {

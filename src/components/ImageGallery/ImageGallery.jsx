@@ -27,38 +27,37 @@ export default class ImageGallery extends Component {
                     this.setState({ showModal: false });
                     return;
                 } else {
-                    let image = this.state.gallery.filter(obj => {
-                        return obj.id === parseInt(target.id);
-                    });
-                
-                this.setState({ bigImgUrl: image[0].largeImageURL});
+                let image = this.state.gallery.filter(obj => {
+                    return obj.id === parseInt(target.id);
+                });
+
+                // this.setState({ bigImgUrl: image[0].largeImageURL});
             }
         });        
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-        const { page } = this.state;
+        const { page, total } = this.state;
         const prevQuery = prevProps.query;
         const currentQuery = this.props.query;
 
-        // if (currentQuery !== prevQuery) {
-        //     this.setState({ gallery: [] });
-        // }
+        if (currentQuery !== prevQuery) {
+            this.setState({ gallery: [] });
+        }
 
         if (currentQuery !== prevQuery || prevState.page !== page) {
             this.setState({ status: 'pending' })
             this.getImages();
         }
 
-        if (currentQuery !== prevQuery) {
-            this.showMessage();
+        if (total === 0) {
+            this.showSuccesMessage(total);
+            return;
         }
     }
 
-    showMessage = () => {
-        const { total, query } = this.state;
-        console.log(total);
-
+    showSuccesMessage = () => {
+        const { total } = this.state;
         if(total !== null) {
             return toast.success(`Total images in this gallery: ${total}`, {
                 position: "top-right",
@@ -71,7 +70,9 @@ export default class ImageGallery extends Component {
                 theme: "light",
             });
         }
+    }
 
+    showErrorMessage = (query) => {
         toast.error(`No images by query "${query}"`, {
             position: "top-right",
             autoClose: 5000,
@@ -82,7 +83,7 @@ export default class ImageGallery extends Component {
             progress: undefined,
             theme: "light",
         });
-    }
+    } 
 
     getImages = () => {
         const { page } = this.state;
@@ -93,7 +94,11 @@ export default class ImageGallery extends Component {
                 const total = data.totalHits;
                 const newImages = data.hits;
 
-                if (!newImages.length) return;
+                if (!newImages.length) {
+                    this.showErrorMessage(query);
+                    this.setState({status: 'rejected'})
+                    return;
+                }
 
                 this.setState(({ gallery }) => {
                     const newArray = [...gallery, ...newImages];
@@ -103,41 +108,31 @@ export default class ImageGallery extends Component {
                         total
                     }
                 })
-
-                // return newImages;
             })
-            // .then(({ hits }) => {
-            // })
+
             .catch(error => this.setState({
                 status: 'rejected',
             })) 
     }
 
-    toggleModal = () => {
+    toggleModal = ({ target }) => {
         this.setState(({ showModal }) => ({ showModal: !showModal }));
     };
+
+    openModal = ({target}) => {
+        this.setState({bigImgUrl: target.dataset.url})
+    }
 
 
     handleLoadMore = () => {
         this.setState(prevState => ({
             page: prevState.page + 1,
         }));
-
-        this.getImages(this.state.page);
     }
 
-    // toggleLoadBtn = () => {
-    //     console.log();
-    //     if (Math.ceil(this.state.gallery.total / 12) <= page) {
-    //         this.setState({ toggleButton: false });
-    //     } else {
-    //         this.setState({ toggleButton: true });
-    //     }
-    // }
-
-
     render() {
-        const { gallery, error, status, page, showModal, bigImgUrl } = this.state;
+        const { gallery, status, showModal, bigImgUrl, total } = this.state;
+
 
         if (status === 'idle') {
             return (<DeafaultScreen />);
@@ -161,16 +156,23 @@ export default class ImageGallery extends Component {
                                     key={id}
                                     smallUrl={webformatURL}
                                     largeUrl={largeImageURL}
+                                    onOpenModal={this.openModal}
                                 />
                             )
                         }
                     </GalleryWrapper>
 
                     {
-                        showModal && <Modal onClose={this.toggleModal} bigImgUrl={bigImgUrl} />
+                        showModal && <Modal onClose={this.toggleModal}  bigImgUrl={bigImgUrl} query={this.props.query} />
                     }
 
-                    <LoadMoreButton onLoadMore={this.handleLoadMore} />
+
+                    {
+                        gallery.length > 0 && gallery.length !== total && (
+                            <LoadMoreButton onLoadMore={this.handleLoadMore} query={this.props.query} />
+                        )
+                    }
+                    
                 </>
             )
         }

@@ -20,4 +20,19 @@ export const ModalContainer = styled.div`
 
 export const ModalImg = styled.img`
     width: 850px;
-`
+`;
+
+export const CloseModalBtn = styled.button`
+    position: absolute;
+    top: 30px; 
+    right: 50px;
+    border: none;
+    background-color: transparent;
+    color: #FAEA73;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        color: #F7CEDC;
+    }
+`;
