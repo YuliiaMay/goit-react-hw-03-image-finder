@@ -21,21 +21,6 @@ export default class ImageGallery extends Component {
         isLoadBtn: false
     }
 
-    componentDidMount() {
-        document.addEventListener('click', ({ target }) => {
-            if (target.nodeName !== 'IMG') {
-                    this.setState({ showModal: false });
-                    return;
-                } else {
-                let image = this.state.gallery.filter(obj => {
-                    return obj.id === parseInt(target.id);
-                });
-
-                // this.setState({ bigImgUrl: image[0].largeImageURL});
-            }
-        });        
-    }
-
     componentDidUpdate = (prevProps, prevState) => {
         const { page, total } = this.state;
         const prevQuery = prevProps.query;
@@ -45,15 +30,27 @@ export default class ImageGallery extends Component {
             this.setState({ gallery: [] });
         }
 
+
         if (currentQuery !== prevQuery || prevState.page !== page) {
             this.setState({ status: 'pending' })
             this.getImages();
         }
 
-        if (total === 0) {
+        if (page === 1) {
             this.showSuccesMessage(total);
             return;
         }
+
+        console.log(prevState.gallery === []);
+        // if (prevState.gallery === null) {
+        //     this.showSuccesMessage(total);
+        //     return;
+        // }
+
+        // if (total !== null) {
+        //     this.showSuccesMessage(total);
+        //     return;
+        // }
     }
 
     showSuccesMessage = () => {
