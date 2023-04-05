@@ -22,7 +22,11 @@ export default class ImageGallery extends Component {
     }
 
     componentDidMount() {
-        document.addEventListener('click', ({ target }) => {
+        // const { total } = this.state;
+        document.addEventListener('click', ({ target, currentTarget}) => {
+        //     if (target.nodeName === 'BUTTON' || target.nodeName === 'circle' || target.nodeName === 'rect') {
+        //         this.showSuccesMessage(total);
+        //     }
             if (target.nodeName !== 'IMG') {
                     this.setState({ showModal: false });
                     return;
@@ -33,7 +37,8 @@ export default class ImageGallery extends Component {
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-        const { page } = this.state;
+        const { page, total } = this.state;
+        console.log(total);
         const prevQuery = prevProps.query;
         const currentQuery = this.props.query;
 
@@ -46,16 +51,10 @@ export default class ImageGallery extends Component {
             this.setState({ status: 'pending' })
             this.getImages();
         }
-
-        // if (page === 1 && !showModal) {
-        //     this.showSuccesMessage(total);
-        //     return;
-        // }
     }
 
     showSuccesMessage = () => {
         const { total } = this.state;
-        if(total !== null) {
             return toast.success(`Total images in this gallery: ${total}`, {
                 position: "top-right",
                 autoClose: 5000,
@@ -66,11 +65,10 @@ export default class ImageGallery extends Component {
                 progress: undefined,
                 theme: "light",
             });
-        }
     }
 
-    showErrorMessage = (query) => {
-        toast.error(`No images by query "${query}"`, {
+    showErrorMessage = () => {
+        toast.error("Let's try something else", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -83,7 +81,7 @@ export default class ImageGallery extends Component {
     } 
 
     getImages = () => {
-        const { page } = this.state;
+        const { page, status, showModal } = this.state;
         const { query } = this.props;
 
         fetchImages(query, page)
@@ -105,8 +103,11 @@ export default class ImageGallery extends Component {
                         total
                     }
                 })
-            })
 
+                if (status === 'resolved' && page === 1 && showModal === false) {
+                    this.showSuccesMessage();
+                }
+            })
             .catch(error => this.setState({
                 status: 'rejected',
             })) 
