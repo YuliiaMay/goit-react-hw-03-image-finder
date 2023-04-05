@@ -44,6 +44,7 @@ class Searchbar extends Component {
 
 
     render() {
+        console.log(this.props);
         return (
             <SearchbarContainer>
                 <SearchForm onSubmit={this.handelSubmit}>

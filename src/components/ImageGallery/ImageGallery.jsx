@@ -8,6 +8,7 @@ import ErrorScreen from "components/ErrorScreen/ErrorScreen";
 import { toast } from 'react-toastify';
 import Modal from "components/Modal/Modal";
 import { fetchImages } from "services/api";
+import scrollPageDown from "helpers/Scroll";
 
 
 export default class ImageGallery extends Component {
@@ -22,11 +23,7 @@ export default class ImageGallery extends Component {
     }
 
     componentDidMount() {
-        // const { total } = this.state;
-        document.addEventListener('click', ({ target, currentTarget}) => {
-        //     if (target.nodeName === 'BUTTON' || target.nodeName === 'circle' || target.nodeName === 'rect') {
-        //         this.showSuccesMessage(total);
-        //     }
+        document.addEventListener('click', ({ target }) => {
             if (target.nodeName !== 'IMG') {
                     this.setState({ showModal: false });
                     return;
@@ -37,8 +34,7 @@ export default class ImageGallery extends Component {
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-        const { page, total } = this.state;
-        console.log(total);
+        const { page } = this.state;
         const prevQuery = prevProps.query;
         const currentQuery = this.props.query;
 
@@ -106,6 +102,10 @@ export default class ImageGallery extends Component {
 
                 if (status === 'resolved' && page === 1 && showModal === false) {
                     this.showSuccesMessage();
+                }
+
+                if (page > 1) {
+                    scrollPageDown();
                 }
             })
             .catch(error => this.setState({

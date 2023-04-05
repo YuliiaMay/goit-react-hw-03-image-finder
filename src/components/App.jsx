@@ -15,9 +15,6 @@ export class App extends Component {
     this.setState({query})
   }
 
-
-
-
   render() {
     const { query } = this.state;
 

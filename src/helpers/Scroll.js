@@ -1,7 +1,9 @@
 
-export default function scrollPageDown() {
-    window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-    });
+function scrollPageDown() {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+        });
 }
+
+export default scrollPageDown;
