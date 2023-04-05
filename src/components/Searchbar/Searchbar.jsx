@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { SearchbarContainer, SearchForm, SearchFormButton, SearchFormButtonLabel, SearchFormInput } from "./Searchbar.styled";
+import { SearchbarContainer, SearchForm, SearchFormButton, SearchFormInput } from "./Searchbar.styled";
 import { toast } from 'react-toastify';
 import { FcSearch } from "react-icons/fc";
 
@@ -49,7 +49,6 @@ class Searchbar extends Component {
                 <SearchForm onSubmit={this.handelSubmit}>
                     <SearchFormButton type="submit">
                         <FcSearch size={32}/>
-                        {/* <SearchFormButtonLabel>Search</SearchFormButtonLabel> */}
                     </SearchFormButton>
 
                     <SearchFormInput

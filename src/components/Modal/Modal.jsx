@@ -25,7 +25,7 @@ class Modal extends Component {
                 <ModalContainer>
                     <ModalImg src={bigImgUrl} alt={query} />
                 </ModalContainer>
-                {/* <CloseModalBtn><ImCross size={28}/></CloseModalBtn> */}
+                <CloseModalBtn><ImCross size={28}/></CloseModalBtn>
             </Overlay>
         )
     }
