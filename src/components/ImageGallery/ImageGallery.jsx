@@ -21,8 +21,19 @@ export default class ImageGallery extends Component {
         isLoadBtn: false
     }
 
+    componentDidMount() {
+        document.addEventListener('click', ({ target }) => {
+            if (target.nodeName !== 'IMG') {
+                    this.setState({ showModal: false });
+                    return;
+            }
+
+            this.setState({ showModal: true });
+        });        
+    }
+
     componentDidUpdate = (prevProps, prevState) => {
-        const { page, total } = this.state;
+        const { page } = this.state;
         const prevQuery = prevProps.query;
         const currentQuery = this.props.query;
 
@@ -36,18 +47,7 @@ export default class ImageGallery extends Component {
             this.getImages();
         }
 
-        if (page === 1) {
-            this.showSuccesMessage(total);
-            return;
-        }
-
-        console.log(prevState.gallery === []);
-        // if (prevState.gallery === null) {
-        //     this.showSuccesMessage(total);
-        //     return;
-        // }
-
-        // if (total !== null) {
+        // if (page === 1 && !showModal) {
         //     this.showSuccesMessage(total);
         //     return;
         // }
@@ -112,7 +112,7 @@ export default class ImageGallery extends Component {
             })) 
     }
 
-    toggleModal = ({ target }) => {
+    toggleModal = () => {
         this.setState(({ showModal }) => ({ showModal: !showModal }));
     };
 
