@@ -39,7 +39,10 @@ export default class ImageGallery extends Component {
         const currentQuery = this.props.query;
 
         if (currentQuery !== prevQuery) {
-            this.setState({ gallery: [] });
+            this.setState({
+                gallery: [],
+                page: 1,
+            });
         }
 
 
@@ -129,6 +132,8 @@ export default class ImageGallery extends Component {
     }
 
     render() {
+        console.log(this.props);
+        
         const { gallery, status, showModal, bigImgUrl, total } = this.state;
 
 

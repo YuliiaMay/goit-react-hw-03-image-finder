@@ -7,19 +7,7 @@ import { FcSearch } from "react-icons/fc";
 class Searchbar extends Component {
     state = {
         query: '',
-        page: 1,
     }
-
-    resetPage() {
-        this.setState({page: 1})
-    }
-
-    incrementPage() {
-        this.setState(prevState => {
-            return { page: prevState.page + 1 };
-        })
-    }
-
 
     handelChange = ({target: {value}}) => {
         this.setState({query: value.toLowerCase()})
@@ -34,17 +22,19 @@ class Searchbar extends Component {
         }
 
         this.props.onSubmit(this.state.query);
+        console.log('reset');
         this.reset();
     }
 
+
     reset = () => {
-        this.setState({query: ''})
+        console.log('set');
+        this.setState({
+            query: ''
+        })
     }
 
-
-
     render() {
-        console.log(this.props);
         return (
             <SearchbarContainer>
                 <SearchForm onSubmit={this.handelSubmit}>
